@@ -9,7 +9,17 @@ albums_info = []
 #url = "https://vgmdb.net/search?do=results&id=1061698&field=&"
 #url = "https://vgmdb.net/search?do=results&id=1061698&field=&&page=5"
 #url = "https://vgmdb.net/search?do=results&id=1064546&field=&&page=5"
-url = "https://vgmdb.net/search?do=results&id=1064546&field=&"
+#url = "https://vgmdb.net/search?do=results&id=1064546&field=&"
+url = "https://vgmdb.net/search?do=results&id=1067741&field=&"
+#url = "https://vgmdb.net/search?do=results&id=1067741&field=&&page=20"
+
+# Search Parameters
+# publisher type -- Commercial, Doujin/Indie
+# distribution type -- General
+# release status -- No Status
+# category -- Game
+# classification -- Original Soundtrack
+# sort by album titles
 
 next_page_exists = True
 # page_num = 1
@@ -44,25 +54,53 @@ while next_page_exists:
         album_soup = BeautifulSoup(album_page, 'lxml')
 
         #---------
+        # https://stackoverflow.com/questions/54162988/how-to-find-a-tag-without-specific-attribute-using-beautifulsoup
+        # scrape twice, once looking for a `lang` attribute tagged with `en` and another time specifying that the `lang` attribute does not exist
+        # this should get all the English titles, tagged and untagged
         right_column = album_soup.find("td", id="rightcolumn")
         album_stats_box = right_column.find("div", class_="smallfont")
         album_stats_box_list = album_stats_box.find_all("div", style="margin-bottom: 10px;")
-        products_represented_box = album_stats_box_list[3]
-        games_soup = BeautifulSoup(products_represented_box)
-        games_text = games_soup.get_text(separator=', ')
-        print(games_text)
-        # print(products_represented_box.get_text(seperator=', '), end="\n")
-        # games = re.sub(r' /.+?\n', ',', f"{products_represented_box.text.lstrip()[20:]}\n").strip("\n,")
-        # print(games)
-        #composer_en = re.sub(r' /.+?,', ',', f"{composer_html.text.strip()},").rstrip(",")
-        #games = album_stats_box.find_all(class_="productname", lang="en")
-        #print(album_stats_box.prettify())
-        # games_list = []
-        # for game in games:
-        #     games_list.append(game.text)
-        #     print(game.text)
-        # print(games_list)
-        # album_info.append(games_list)
+        if 3 < len(album_stats_box_list):
+            products_represented_box = album_stats_box_list[3]
+                            # print("blah")
+                            # games_soup = BeautifulSoup(products_represented_box, 'lxml')
+                            # games_text = games_soup.get_text(separator=', ')
+                            # print(games_text)
+            # print("WHOLE TEXT")
+            # print(products_represented_box.text)
+            # print("EXTRACTION")
+            # games = products_represented_box.get_text(";", strip=True)
+            # print(games[21:])
+            for br in products_represented_box.select('br'):
+                br.replace_with('\|/')
+            #print(products_represented_box.text.strip()[24:])
+            #games = re.sub(r' /.+?\|/', ', ', f"{products_represented_box.text.lstrip()[20:]}\n").strip("\n,")
+            games = re.sub(r' /.+?\|/', '\|/', f"{products_represented_box.text.strip()[24:]}\|/").rstrip("\|/")
+            #games = games.replace("\|/", ", ")
+            games_list = games.split("\|/")
+            #print(games_list)
+            album_info.append(games_list)
+            # print(products_represented_box.get_text(seperator=', '), end="\n")
+            # games = re.sub(r' /.+?\n', ',', f"{products_represented_box.text.lstrip()[20:]}\n").strip("\n,")
+            # print(games)
+            #composer_en = re.sub(r' /.+?,', ',', f"{composer_html.text.strip()},").rstrip(",")
+                # en_games = products_represented_box.find_all(class_="productname", lang="en")
+                # no_lang_games = products_represented_box.find_all("br", lang=False)
+                # print("ENGLISH GAMES")
+                # for en_game in en_games:
+                #     print(en_game.text.strip())
+                # print("NO LANG GAMES")
+                # for no_lang_game in no_lang_games:
+                #     print(no_lang_game.prettify())
+            #print("\n")
+            # print(games)
+            #print(album_stats_box.prettify())
+            # games_list = []
+            # for game in games:
+            #     games_list.append(game.text)
+            #     print(game.text)
+            # print(games_list)
+            # album_info.append(games_list)
         #---------
 
         album_title = album_soup.find(class_="albumtitle", lang="en")
@@ -82,24 +120,31 @@ while next_page_exists:
         album_info.append(tracks_list)
 
         credits_html_excess = album_soup.find_all("table", id="album_infobit_large")
-        credits_html = credits_html_excess[1]
-        #print(credits_html.prettify())
-        composer_heading_html = credits_html.find("span", title="Composer")
-        if composer_heading_html != None:
-            #print(composer_html.prettify())
-            composer_html = composer_heading_html.parent.parent.parent.next_sibling
-            #print(composer_html.text.strip())
-            #         composer_en = composer_html.text.split("/", 1)[0].strip()
-            composer_en = re.sub(r' /.+?,', ',', f"{composer_html.text.strip()},").rstrip(",")
-            #print(composer_en)
-            #print(composer_en)
-            album_info.append(composer_en)
-            # Chanchacorin*, Ogeretsu Kun / おげれつくん*, Bunbun / ぶんぶん*, Ojalin*, Mari / まり*, YUKO*
-            # Chanchacorin*, Ogeretsu Kun  Bunbun  Ojalin*, Mari  YUKO*
-            # Chanchacorin*, Ogeretsu Kun, Bunbun, Ojalin*, Mari, YUKO*
+        if 1 < len(credits_html_excess):
+            credits_html = credits_html_excess[1]
+            #print(credits_html.prettify())
+            composer_heading_html = credits_html.find("span", title="Composer")
+            if composer_heading_html != None:
+                #print(composer_html.prettify())
+                composer_html = composer_heading_html.parent.parent.parent.next_sibling
+                #print(composer_html.text.strip())
+                #         composer_en = composer_html.text.split("/", 1)[0].strip()
+                composers_str = re.sub(r' /.+?,', ',', f"{composer_html.text.strip()},").rstrip(",")
+                #print(composer_en)
+                #print(composer_en)
+                composers_list = composers_str.split(", ")
+                # for composer in composers_list:
+                #     composer = composer.strip()
+                album_info.append(composers_list)
+                # 'Keith Burgun, Blake Reynolds'
+                # ['Keith Burgun', 'Blake Reynolds']
+                #album_info.append(composer_en)
+                # Chanchacorin*, Ogeretsu Kun / おげれつくん*, Bunbun / ぶんぶん*, Ojalin*, Mari / まり*, YUKO*
+                # Chanchacorin*, Ogeretsu Kun  Bunbun  Ojalin*, Mari  YUKO*
+                # Chanchacorin*, Ogeretsu Kun, Bunbun, Ojalin*, Mari, YUKO*
 
         albums_info.append(album_info)
-        print(album_info, end="\n")
+        #print(album_info, end="\n\n")
 
     pages_html = index_soup.find("div", class_="pagenav")
     current_page = pages_html.find("td", class_="alt2")
@@ -116,7 +161,8 @@ while next_page_exists:
         # url = f"{url}&page={page_num}"
         #break
 
-
+data_df = pd.DataFrame(albums_info, columns = ['Games', 'Album', 'Tracks', 'Composers'])
+data_df.to_csv('music-dataset.csv', index=False)
 #print(album_info)
 #print(album_heading_html_list)
 driver.close()
