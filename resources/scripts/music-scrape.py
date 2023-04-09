@@ -1,5 +1,4 @@
 from selenium import webdriver
-from string import ascii_uppercase
 from bs4 import BeautifulSoup
 import pandas as pd
 import re
@@ -66,6 +65,8 @@ while next_page_exists:
             games = re.sub(r' /.+?\|/', '\|/', f"{products_represented_box.text.strip()[24:]}\|/").rstrip("\|/")
             games_list = games.split("\|/")
             album_info.append(games_list)
+        else:
+            album_info.append("")
 
         # extracts the English name of the album itself
         album_title = album_soup.find(class_="albumtitle", lang="en")
@@ -74,14 +75,15 @@ while next_page_exists:
         # extracts the English names of tracks in the album
         tracklist_box = album_soup.find("span", class_="tl")
         if tracklist_box == None:
-            continue
-        tracks_info_list = tracklist_box.find_all("tr", class_="rolebit")
-        tracks_list = []
-        for track_info in tracks_info_list:
-            track_info_list = track_info.find_all("td", class_="smallfont")
-            track_name = track_info_list[1].text.strip()
-            tracks_list.append(track_name)
-        album_info.append(tracks_list)
+            album_info.append("")
+        else:
+            tracks_info_list = tracklist_box.find_all("tr", class_="rolebit")
+            tracks_list = []
+            for track_info in tracks_info_list:
+                track_info_list = track_info.find_all("td", class_="smallfont")
+                track_name = track_info_list[1].text.strip()
+                tracks_list.append(track_name)
+            album_info.append(tracks_list)
 
         # extracts the English names of composers of the album's music
         credits_html_excess = album_soup.find_all("table", id="album_infobit_large")
@@ -93,7 +95,11 @@ while next_page_exists:
                 composers_str = re.sub(r' /.+?,', ',', f"{composer_html.text.strip()},").rstrip(",")
                 composers_list = composers_str.split(", ")
                 album_info.append(composers_list)
-
+            else:
+                album_info.append("")
+        else:
+            album_info.append("")
+        
         albums_info.append(album_info)
 
     # gets the link to the next page if it exists
