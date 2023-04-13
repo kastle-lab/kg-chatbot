@@ -22,3 +22,9 @@ This section gives a brief overview of the layout of this repository.
   - `convology.owl`: Convology's `owl` file downloaded from [here](https://horus-ai.fbk.eu/convology/)
 
 ## Methodology
+
+what I think i'm doing for the departmental honors thesis (does not need to be perfect
+
+
+
+what I've done and where I'm going
