@@ -122,7 +122,8 @@ def apply_mapping(row, mapping, graph):
         for varid in varids:
             try:
                 if row[varid] != "":
-                    varid_vals.append(row[varid].replace(' ', '%20')
+                    varid_vals.append(row[varid].replace('%', '%25')
+                                    .replace(' ', '%20')
                                     .replace('¡', '%C2%A1')
                                     .replace("'", '%27')
                                     .replace('/', '%2F')
@@ -138,7 +139,13 @@ def apply_mapping(row, mapping, graph):
                                     .replace('*', '%2A')
                                     .replace('?', '%3F')
                                     .replace('~', '%7E')
-                                    .replace('@', '%40'))
+                                    .replace('@', '%40')
+                                    .replace('#', '%23')
+                                    .replace('°', '%C2%B0')
+                                    .replace(';', '%3B')
+                                    .replace('×', '%C3%97')
+                                    .replace('$', '%24')
+                                    .replace('♪', '%E2%99%AA'))
             except KeyError:
                 msg = "Variable ID missing from data file."
                 logging.error(msg)
