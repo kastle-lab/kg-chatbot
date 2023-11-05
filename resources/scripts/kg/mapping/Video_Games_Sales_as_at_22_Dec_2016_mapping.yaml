@@ -1,0 +1,104 @@
+metadata:
+  name: "Video Game Mapping"
+  source_ext: "csv"
+
+cvs:
+  - cv:
+    type: "vg-ont:VideoGameObservableProperty"  # Define your custom ontology or use existing ones
+    uri: "vg:videoGameObservableProperty"
+    instances: ["Name", "Platform", "Year_of_Release", "Genre", "Publisher", "NA_Sales", "EU_Sales", "JP_Sales", "Other_Sales", "Global_Sales", "Critic_Score", "Critic_Count", "User_Score", "User_Count", "Developer", "ESRB_Rating"]
+
+root:
+  type: "vg-ont:VideoGame"
+  uri: "vg:videoGame"
+  varids: ["Name"]  # Use a unique identifier for each video game, like "Name" or a combination of fields
+  connections:
+    - p: "rdf:type"
+      o: "vg-ont:VideoGame"
+    - p: "vg-ont:isOnPlatform"  # Define custom properties based on your ontology
+      inv: "vg-ont:hasGame"
+      o:
+        type: "vg-ont:Platform"
+        uri: "vg:platform"
+        varids: ["Platform"]
+    - p: "vg-ont:hasReleaseYear"
+      inv: "vg-ont:hasRelease"
+      o:
+        type: "xsd:gYear"
+        uri: "vg:releaseYear"
+        varids: ["Year_of_Release"]
+    - p: "vg-ont:hasGenre"
+      inv: "vg-ont:isGameType"
+      o:
+        type: "vg-ont:Genre"
+        uri: "vg:genre"
+        varids: ["Genre"]
+    - p: "vg-ont:publishedBy"
+      inv: "vg-ont:published"
+      o:
+        type: "vg-ont:Publisher"
+        uri: "vg:publisher"
+        varids: ["Publisher"]
+    - p: "vg-ont:hasNASales"
+      o:
+        type: "vg-ont:NASales"
+        uri: "vg:NASales"
+        varids: ["NA_Sales"]
+    - p: "vg-ont:hasEUSales"
+      o:
+        type: "vg-ont:EUSales"
+        uri: "vg:EUSales"
+        varids: ["EU_Sales"]
+    - p: "vg-ont:hasJPSales"
+      o:
+        type: "vg-ont:JPSales"
+        uri: "vg:JPSales"
+        varids: ["JP_Sales"]
+    - p: "vg-ont:hasOtherSales"
+      o:
+        type: "vg-ont:OtherSales"
+        uri: "vg:otherSales"
+        varids: ["Other_Sales"]
+    - p: "vg-ont:hasGlobalSales"
+      o:
+        type: "vg-ont:GlobalSales"
+        uri: "vg:globalSales"
+        varids: ["Global_Sales"]
+    - p: "vg-ont:hasCriticScore"
+      o:
+        type: "vg-ont:CriticScore"
+        uri: "vg:criticScore"
+        varids: ["Critic_Score", "Critic_Count"]
+    - p: "vg-ont:hasCriticScore"
+      o:
+        type: "vg-ont:CriticScore"
+        uri: "vg:criticScore"
+        varids: ["Critic_Score"]
+        connections:
+          - p: "vg-ont:hasCriticCount"
+            o:
+              type: "vg-ont:CriticCount"
+              uri: "vg:criticCount"
+              varids: ["Critic_Count"]
+    - p: "vg-ont:hasUserScore"
+      o:
+        type: "vg-ont:UserScore"
+        uri: "vg:userScore"
+        varids: ["User_Score"]
+        connections:
+          - p: "vg-ont:hasUserCount"
+            o:
+              type: "vg-ont:UserCount"
+              uri: "vg:userCount"
+              varids: ["User_Count"]
+    - p: "vg-ont:developedBy"
+      inv: "vg-ont:developed"
+      o:
+        type: "vg-ont:Developer"
+        uri: "vg:developer"
+        varids: ["Developer"]
+    - p: "vg-ont:hasESRBRating"
+      o:
+        type: "vg-ont:ESRBRating"
+        uri: "vg:esrbRating"
+        varids: ["ESRB_Rating"]
