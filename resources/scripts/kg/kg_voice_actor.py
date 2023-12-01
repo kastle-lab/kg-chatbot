@@ -69,7 +69,7 @@ a = pfs["rdf"]["type"]
 data_dir = "../../datasets"
 data_file = "va_dataset.csv"
 data_path = os.path.join(data_dir, data_file)
-output_dir = "output"
+output_dir = "output_voice_actors"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 logging.info(f"Opening: {data_path}")

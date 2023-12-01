@@ -69,7 +69,7 @@ a = pfs["rdf"]["type"]
 data_dir = "../../datasets"
 data_file = "Video_Games_Sales_as_at_22_Dec_2016.csv"
 data_path = os.path.join(data_dir, data_file)
-output_dir = "output"
+output_dir = "output_Video_Games_Sales_as_at_22_Dec_2016"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 logging.info(f"Opening: {data_path}")
