@@ -50,5 +50,5 @@ for letter in ascii_uppercase:
     
 # puts the extracted data in a csv
 data_df = pd.DataFrame(games_info, columns = ['Game', 'Character', 'VoiceActor'])
-data_df.to_csv('va-dataset.csv', index=False)
+data_df.to_csv('va_dataset.csv', index=False)
 driver.close()

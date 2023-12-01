@@ -31,5 +31,5 @@ for game_title_html in game_titles_html:
 
 # puts the extracted data in a csv
 data_df = pd.DataFrame(games_info, columns = ['Game', 'Artists'])
-data_df.to_csv('artist-dataset.csv', index=False)
+data_df.to_csv('artist_dataset.csv', index=False)
 driver.close()

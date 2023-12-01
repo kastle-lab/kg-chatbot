@@ -114,5 +114,5 @@ while next_page_exists:
 
 # puts the extracted data in a csv
 data_df = pd.DataFrame(albums_info, columns = ['Games', 'Album', 'Tracks', 'Composers'])
-data_df.to_csv('music-dataset.csv', index=False)
+data_df.to_csv('music_dataset.csv', index=False)
 driver.close()
