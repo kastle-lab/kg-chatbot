@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.WARNING)
 ################################################################
 # Directory stuff
 mapping_dir = "mapping"
-mapping_file = "voice-actor-mapping.yaml"
+mapping_file = "voice_actor_mapping.yaml"
 mapping_path = os.path.join(mapping_dir, mapping_file)
 
 # Open the mapping file
@@ -67,9 +67,9 @@ a = pfs["rdf"]["type"]
 ################################################################
 # open the data file
 data_dir = "../../datasets"
-data_file = "va-dataset.csv"
+data_file = "va_dataset.csv"
 data_path = os.path.join(data_dir, data_file)
-output_dir = "output"
+output_dir = "output_voice_actors"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 logging.info(f"Opening: {data_path}")
