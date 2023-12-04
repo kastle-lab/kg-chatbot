@@ -21,10 +21,5 @@ This section gives a brief overview of the layout of this repository.
   - `convology.owl`: Convology's `owl` file downloaded from [here](https://horus-ai.fbk.eu/convology/)
   - `video_game_schema.graphml`: A schema I created for this project
 
-## Methodology
-
-what I think i'm doing for the departmental honors thesis (does not need to be perfect
-
-
-
-what I've done and where I'm going
+## Current State and Next Steps
+A functional but limited conversational agent has been created. Next steps would entail the following: integration of more data, utilizing more recognized entities and knowledge graph queries, retaining context of conversations and discerning user intent, and displaying responses in natural language.
